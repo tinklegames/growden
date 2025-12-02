@@ -15,16 +15,16 @@
     
     // Local banner image paths (adblock-safe names)
     const LOCAL_BANNER_IMAGES = {
-        0: 'ads/local-ads-assets/a.png', // 300x250
-        1: 'ads/local-ads-assets/b.png', // 728x90
-        2: 'ads/local-ads-assets/c.png'  // 300x600
+        0: '', // 300x250
+        1: '', // 728x90
+        2: ''  // 300x600
     };
     
     // Optional banner links (set to null to disable click functionality)
     const LOCAL_BANNER_LINKS = {
-        0: 'https://kour.io/?utm_source=growden&utm_medium=banner&utm_campaign=crosspromo', // 300x250
-        1: 'https://brainrots.io/?utm_source=growden&utm_medium=banner&utm_campaign=crosspromo', // 728x90 
-        2: 'https://1v1s.lol/?utm_source=growden&utm_medium=banner&utm_campaign=crosspromo'  // 300x600
+        0: 'null', // 300x250
+        1: 'null', // 728x90 
+        2: 'null'  // 300x600
     };
     
     // Video ad provider implementation (simulated)
