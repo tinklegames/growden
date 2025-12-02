@@ -13,9 +13,9 @@
     
     // CPMStar banner placement IDs (replace with your actual placement IDs)
     window.cpmstarBannerMapping = {
-        0: '88824', // 300x250
-        1: '88823', // 728x90
-        2: '88827'  // 300x600
+        0: '', // 300x250
+        1: '', // 728x90
+        2: ''  // 300x600
     };
     
     // CPMStar state
