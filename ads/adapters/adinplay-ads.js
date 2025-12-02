@@ -6,9 +6,9 @@
     
     // AdinPlay tag mapping - can be customized per game
     const ADINPLAY_TAG_MAPPING = {
-        "300x250": "growden-io_300x250",
-        "728x90": "growden-io_728x90", 
-        "300x600": "growden-io_300x600"
+        "300x250": "",
+        "728x90": "", 
+        "300x600": ""
     };
     
     // Ensure global providers exist
