@@ -115,7 +115,7 @@ window.waitForAdinPlay = function() {
 function loadProviderScript(provider) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = `ads/adapters/${provider}-ads.js`;
+        script.src = `/growden/ads/adapters/${provider}-ads.js`;
         script.onload = () => {
             resolve();
         };
@@ -143,21 +143,21 @@ window.SDK = {
     _pendingBannerQueue: [],
     
     gameplayStart() {
-        if (DEBUG_MODE) console.log("[sdk.js] Gameplay started");
+        if (DEBUG_MODE) console.log("[growden/sdk.js] Gameplay started");
     },
     
     loadingStart() {
-        if (DEBUG_MODE) console.log("[sdk.js] Loading started");
+        if (DEBUG_MODE) console.log("[growden/sdk.js] Loading started");
         onWindowResize();
     },
     
     loadingEnd() {
-        if (DEBUG_MODE) console.log("[sdk.js] Loading finished");
+        if (DEBUG_MODE) console.log("[growden/sdk.js] Loading finished");
         onWindowResize();
     },
     
     gameplayEnd() {
-        if (DEBUG_MODE) console.log("[sdk.js] Gameplay ended");
+        if (DEBUG_MODE) console.log("[growden/sdk.js] Gameplay ended");
     },
     
     showMidroll() {
@@ -192,7 +192,7 @@ window.SDK = {
         const now = Date.now();
         if (!this._bannerVisibleSince[adTag]) {
             this._bannerVisibleSince[adTag] = now;
-            if (DEBUG_MODE) console.log(`[sdk.js] Started tracking showtime for ${adTag}`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] Started tracking showtime for ${adTag}`);
         }
     },
     
@@ -202,14 +202,14 @@ window.SDK = {
             const visibleDuration = now - this._bannerVisibleSince[adTag];
             this._bannerShowtime[adTag] = (this._bannerShowtime[adTag] || 0) + visibleDuration;
             delete this._bannerVisibleSince[adTag];
-            if (DEBUG_MODE) console.log(`[sdk.js] Stopped tracking showtime for ${adTag}. Total showtime: ${Math.floor(this._bannerShowtime[adTag] / 1000)}s`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] Stopped tracking showtime for ${adTag}. Total showtime: ${Math.floor(this._bannerShowtime[adTag] / 1000)}s`);
         }
     },
     
     _resetShowtime(adTag) {
         this._bannerShowtime[adTag] = 0;
         delete this._bannerVisibleSince[adTag];
-        if (DEBUG_MODE) console.log(`[sdk.js] Reset showtime for ${adTag}`);
+        if (DEBUG_MODE) console.log(`[growden/sdk.js] Reset showtime for ${adTag}`);
     },
     
     _getCurrentShowtime(adTag) {
@@ -236,12 +236,12 @@ window.SDK = {
         const now = Date.now();
         
         if (!adTag || !dims) {
-            if (DEBUG_MODE) console.log(`[sdk.js] SetBanner: Invalid banner type ${bannerType}`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] SetBanner: Invalid banner type ${bannerType}`);
             return;
         }
         
         if (IS_MOBILE && !dims.enableForMobile) {
-            if (DEBUG_MODE) console.log(`[sdk.js] SetBanner: Banner ${adTag} disabled on mobile`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] SetBanner: Banner ${adTag} disabled on mobile`);
             return;
         }
         
@@ -262,7 +262,7 @@ window.SDK = {
         
         // Handle hiding
         if (bannerPosition === 0) {
-            if (DEBUG_MODE) console.log(`[sdk.js] Hiding banner ${adTag}`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] Hiding banner ${adTag}`);
             if (existingInstance && existingInstance.container) {
                 // Stop tracking showtime when hiding
                 this._stopTrackingShowtime(adTag);
@@ -391,7 +391,7 @@ window.SDK = {
         
         const tryNextProvider = async () => {
             if (providerIndex >= priorities.length) {
-                if (DEBUG_MODE) console.log(`[sdk.js] All providers failed for banner ${adTag} at ${posName}`);
+                if (DEBUG_MODE) console.log(`[growden/sdk.js] All providers failed for banner ${adTag} at ${posName}`);
                 return false;
             }
             
@@ -399,12 +399,12 @@ window.SDK = {
             const provider = window.bannerAdProviders?.[providerName];
             
             if (!provider) {
-                if (DEBUG_MODE) console.log(`[sdk.js] Provider ${providerName} not available for banner ${adTag}`);
+                if (DEBUG_MODE) console.log(`[growden/sdk.js] Provider ${providerName} not available for banner ${adTag}`);
                 providerIndex++;
                 return tryNextProvider();
             }
             
-            if (DEBUG_MODE) console.log(`[sdk.js] Trying to show banner ${adTag} at ${posName} with provider: ${providerName}`);
+            if (DEBUG_MODE) console.log(`[growden/sdk.js] Trying to show banner ${adTag} at ${posName} with provider: ${providerName}`);
             
             try {
                 // Pass bannerType for CPMStar/Nitro/Local, adTag for AdinPlay
@@ -412,19 +412,19 @@ window.SDK = {
                 const success = await provider.displayBanner(param, container);
                 
                 if (success) {
-                    if (DEBUG_MODE) console.log(`[sdk.js] Successfully showing banner ${adTag} at ${posName} with ${providerName}`);
+                    if (DEBUG_MODE) console.log(`[growden/sdk.js] Successfully showing banner ${adTag} at ${posName} with ${providerName}`);
                     this._lastRefreshed[adTag] = now;
                     // Reset showtime after successful refresh
                     this._resetShowtime(adTag);
                     this._startTrackingShowtime(adTag);
                     return true;
                 } else {
-                    if (DEBUG_MODE) console.log(`[sdk.js] Showing banner ${adTag} at ${posName} with ${providerName} FAILED, trying next...`);
+                    if (DEBUG_MODE) console.log(`[growden/sdk.js] Showing banner ${adTag} at ${posName} with ${providerName} FAILED, trying next...`);
                     providerIndex++;
                     return tryNextProvider();
                 }
             } catch (error) {
-                if (DEBUG_MODE) console.log(`[sdk.js] Error showing banner ${adTag} with ${providerName}:`, error.message || error);
+                if (DEBUG_MODE) console.log(`[growden/sdk.js] Error showing banner ${adTag} with ${providerName}:`, error.message || error);
                 providerIndex++;
                 return tryNextProvider();
             }
@@ -438,7 +438,7 @@ window.SDK = {
 window.SDK.SetBanner = function(bannerType, bannerPosition) {
     // If not initialized and trying to show banner (not hide), queue it
     if (!window.SDK._isInitialized && bannerPosition !== 0) {
-        if (DEBUG_MODE) console.log(`[sdk.js] SDK not initialized yet, queueing banner ${window.bannerMapping[bannerType] || bannerType} for position ${bannerPosition}`);
+        if (DEBUG_MODE) console.log(`[growden/sdk.js] SDK not initialized yet, queueing banner ${window.bannerMapping[bannerType] || bannerType} for position ${bannerPosition}`);
         
         // Check if we already have this banner type in queue
         const existingIndex = window.SDK._pendingBannerQueue.findIndex(item => item.bannerType === bannerType);
@@ -678,7 +678,7 @@ window.SDK._showtimeInterval = setInterval(async function() {
             // Check if it's time to refresh based on showtime
             const currentShowtime = window.SDK._getCurrentShowtime(adTag);
             if (currentShowtime >= MIN_REFRESH_INTERVAL) {
-                if (DEBUG_MODE) console.log(`[sdk.js] Banner ${adTag} reached ${Math.floor(currentShowtime/1000)}s showtime, refreshing...`);
+                if (DEBUG_MODE) console.log(`[growden/sdk.js] Banner ${adTag} reached ${Math.floor(currentShowtime/1000)}s showtime, refreshing...`);
                 
                 const bannerType = Object.keys(window.bannerMapping).find(key => window.bannerMapping[key] === adTag);
                 if (bannerType !== undefined) {
@@ -730,7 +730,7 @@ window.SDK._processQueuedBanners = function() {
     queue.forEach(({ bannerType, bannerPosition }) => {
         if (DEBUG_MODE) {
             const adTag = window.bannerMapping[bannerType] || bannerType;
-            console.log(`[sdk.js] Processing queued banner: ${adTag} at position ${bannerPosition}`);
+            console.log(`[growden/sdk.js] Processing queued banner: ${adTag} at position ${bannerPosition}`);
         }
         // Use SetBanner to ensure debouncing still applies
         window.SDK.SetBanner(bannerType, bannerPosition);
@@ -739,13 +739,13 @@ window.SDK._processQueuedBanners = function() {
 
 // Initialize
 (async function() {
-    if (DEBUG_MODE) console.log("[sdk.js] Starting SDK initialization...");
+    if (DEBUG_MODE) console.log("[growden/sdk.js] Starting SDK initialization...");
     
     await loadProviders();
     
     // Mark as initialized
     window.SDK._isInitialized = true;
-    if (DEBUG_MODE) console.log("[sdk.js] SDK initialized, providers loaded");
+    if (DEBUG_MODE) console.log("[growden/sdk.js] SDK initialized, providers loaded");
     
     // Process any queued banners
     window.SDK._processQueuedBanners();
