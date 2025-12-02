@@ -1,6 +1,6 @@
 const DISCORD_APP_ID = "1395623586667954256";
 const DISCORD_LOGIN_URL = `https://${DISCORD_APP_ID}.discordsays.com/.proxy/usa-1/api/accounts/login/discord`;
-const DISCORD_SERVER_INVITE_LINK = "https://discord.gg/jdUT7NuWRQ";
+const DISCORD_SERVER_INVITE_LINK = "https://www.youtube.com/watch?v=QDia3e12czc";
 
 console.log("[discord_sdk.js] Initializing");
 let currentParticipantCount = 1;
